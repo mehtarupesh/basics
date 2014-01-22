@@ -11,6 +11,7 @@
 
 #define INT_MIN_VAL (1 << 31)
 #define INT_MAX_VAL (~(1 << 31))
+
 typedef struct node{
 
     int data;
@@ -95,6 +96,7 @@ void main() {
     printf("minValue [%d]\n",minValue(tree));
     printf("hasPathSum (%d) [%d]\n",sum,hasPathSum(tree,sum));
     printf("SameTree [%d]\n",sameTree(tree,tree->left));
+
 }
 
 static node_t* newNode(int data){
@@ -357,3 +359,4 @@ int isBST(node_t *tree)
 
 int isBST2(node_t *tree);
 int isBSTRecur(node_t* tree,int min,int max);
+
