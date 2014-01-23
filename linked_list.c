@@ -43,7 +43,9 @@ void front_back_split2(node_t* source, node_t** frontRef, node_t** backRef);
 int move_node(node_t** dest,node_t** src);
 void alternating_split(node_t* source, node_t** frontRef, node_t** backRef);
 node_t* shuffle_merge(node_t* a,node_t* b);
+node_t* sorted_merge(node_t *a,node_t* b);
 
+void merge_sort(node_t **list);
 //debugging
 void print_list(node_t *hol);
 
@@ -66,13 +68,19 @@ void main(){
     insert_n(&hol,1,23);
     print_list(hol);
 
-    sort_list(&hol);
-    print_list(hol);
+//    sort_list(&hol);
+//    print_list(hol);
+
+    merge_sort(&hol);
+    print_list(hol);    
+
+    return;
 
     alternating_split(hol,&front,&back);
     print_list(front);
     print_list(back);
-    print_list(shuffle_merge(front,back));
+    //print_list(shuffle_merge(front,back));
+    print_list(sorted_merge(front,back));    
 
     return;
 
@@ -414,6 +422,35 @@ int  move_node(node_t** dest,node_t** src)
     return 1;
 }
 
+int  move_node_tail(node_t** dest,node_t** src)
+{
+
+    node_t *temp = *src;
+    node_t *target = *dest;
+
+    if(temp == NULL)
+        return 0;
+
+    *src = (*src)->next;
+   
+    //make ready to add to tail 
+    temp->next = NULL;
+
+    //add to tail
+    if(target == NULL)
+        *dest = temp;
+    else{ 
+
+    while(target->next != NULL)
+        target = target->next;
+
+    }
+
+    target->next = temp;
+
+    return 1;
+}
+
 void alternating_split(node_t* source, node_t** frontRef, node_t** backRef)
 {
     node_t* trav = source;
@@ -459,3 +496,43 @@ node_t* shuffle_merge(node_t* a,node_t* b)
 
 
 }
+
+
+node_t* sorted_merge(node_t *a,node_t* b)
+{
+    node_t *result=NULL;
+    
+    if(a == NULL)
+        return b;
+    if(b == NULL)
+        return a; 
+
+    if(a->data <= b->data){
+        result = a;
+        result->next = sorted_merge(a->next,b);
+    }else{
+        result = b;
+        result->next = sorted_merge(a,b->next);
+    }    
+
+    return result;
+}
+    
+
+void merge_sort(node_t **list)
+{
+    node_t *a = NULL;
+    node_t *b = NULL;
+    node_t *temp = *list;
+
+    if((temp == NULL) || (temp->next == NULL))
+        return;
+
+    front_back_split(*list,&a,&b);
+    merge_sort(&a);
+    merge_sort(&b);
+    
+    *list = sorted_merge(a,b);  
+
+}
+
