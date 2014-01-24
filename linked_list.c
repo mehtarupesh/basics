@@ -44,36 +44,58 @@ int move_node(node_t** dest,node_t** src);
 void alternating_split(node_t* source, node_t** frontRef, node_t** backRef);
 node_t* shuffle_merge(node_t* a,node_t* b);
 node_t* sorted_merge(node_t *a,node_t* b);
-
 void merge_sort(node_t **list);
+node_t* sorted_intersect(node_t* a,node_t* b);
+void reverse(node_t** list);
+void recurse_reverse(node_t** list);
+
 //debugging
 void print_list(node_t *hol);
 
 void main(){
 
     node_t *hol = NULL;
+    node_t *hol1 = NULL;
     node_t *node1,*node2,*node3;
     node_t *node4;
     node_t *front;
     node_t *back;
 
     insert_n(&hol,0,4);
-    print_list(hol);
     insert_n(&hol,1,-2);
-    print_list(hol);
     insert_n(&hol,2,5);
-    print_list(hol);
     insert_n(&hol,0,33);
-    print_list(hol);
     insert_n(&hol,1,23);
-    print_list(hol);
+    insert_n(&hol,1,15);
 
 //    sort_list(&hol);
 //    print_list(hol);
 
     merge_sort(&hol);
     print_list(hol);    
+    
+    reverse(&hol);
+    print_list(hol);
+    
+    recurse_reverse(&hol);
+    print_list(hol);
 
+    return;
+
+    insert_n(&hol1,0,2);
+    insert_n(&hol1,1,-2);
+    insert_n(&hol1,2,51);
+    insert_n(&hol1,0,133);
+    insert_n(&hol1,1,5);
+    insert_n(&hol1,1,15);
+
+//    sort_list(&hol1);
+//    print_list(hol1);
+
+    merge_sort(&hol1);
+    print_list(hol1);    
+    
+    print_list(sorted_intersect(hol,hol1));
     return;
 
     alternating_split(hol,&front,&back);
@@ -244,7 +266,7 @@ void insert_n(node_t** head,int index,int data){
         //slide over the point at index
         if(i == index){
 
-            printf("Sliding over at index [%d]\n",i);	
+    //        printf("Sliding over at index [%d]\n",i);	
             new = node_create(data);	
 
             if(0 == index){
@@ -263,7 +285,7 @@ void insert_n(node_t** head,int index,int data){
 
     //insert first time at index
     if(i == index){
-        printf("Adding first time at index [%d]\n",index);						
+        //printf("Adding first time at index [%d]\n",index);						
         new = node_create(data);	
         if(0 == index){
             *head = new;
@@ -358,9 +380,9 @@ void front_back_split(node_t* source, node_t** frontRef, node_t** backRef)
 
     front_half = n/2 + ((n % 2) ? 1: 0);
 
-    printf("Front Back Split, front = [%d] , back = [%d]\n",front_half,(n - front_half));
+//    printf("Front Back Split, front = [%d] , back = [%d]\n",front_half,(n - front_half));
 
-    print_list(trav);
+    //print_list(trav);
     /*counting method*/ 
     for(i=0;i < n;i++){
 
@@ -536,3 +558,54 @@ void merge_sort(node_t **list)
 
 }
 
+node_t* sorted_intersect(node_t* a,node_t* b)
+{
+   node_t* result = NULL;
+
+   while(1){
+       if(a == NULL || b == NULL)
+           return result;
+
+       if(a->data == b->data)  
+           insert_n(&result,count_elements(result),a->data);
+
+        a = a->next;
+        b = b->next;
+   }
+}
+
+void reverse(node_t** list){
+
+    node_t* head = *list;
+
+    if(head == NULL || head->next == NULL)
+        return;
+
+    *list = NULL;
+    while(move_node(list,&head)){
+
+        
+
+    }
+
+}
+
+void recurse_reverse(node_t** list)
+{
+    node_t *p1,*p2;
+
+    p1 = *list;
+    
+    if(p1 == NULL || p1->next == NULL)
+        return;   
+
+    p2 = (*list)->next;
+    *list = (*list)->next;
+
+    p1->next = NULL;
+
+    recurse_reverse(list);
+
+    p2->next = p1;
+
+}
