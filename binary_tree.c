@@ -186,7 +186,7 @@ int minValue(node_t* tree){
 /*for binary search trees*/
 int maxValueBST(node_t* tree){
 
-    if(tree->left != NULL)
+    if(tree->right != NULL)
         return maxValueBST(tree->left);
 
     return tree->data;
@@ -250,6 +250,7 @@ void printPostOrder(node_t* tree){
     
 }
 
+/*Cool*/
 int hasPathSum(node_t* tree, int sum){
 
     if(tree == NULL)
