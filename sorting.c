@@ -3,22 +3,52 @@
 #include <stdio.h>
 #include <time.h>
 
+
+#define PARENT(i)   ((i - 1)/2)
+#define LEFT_CHILD(i)   (2*i + 1)
+#define RIGHT_CHILD(i)   (2*i + 2)
+
+
 void bubbleSort(int *a,int num);
 void insertionSort(int *a,int num); 
 void mergeSort(int *a,int start,int end);
+
+void swap(int *a,int *b);
+void buildHeap(int *a,int num);
+void removeRoot(int *a,int num);
+void heapSort(int *a,int num);
 void printArray(int *a, int num);
+
+
 
 void main()
 {
     srand(time(NULL));
 
-    int a[20];
+    int a[20],b[10];
     int i;
 
     for(i=0;i < 20;i++){
         a[i] = rand() % 50;
+
+        if(i < 10)b[i] = rand() % 50;
     }
 
+    printf("Before\n");
+    printArray(b,10);   
+
+    buildHeap(b,10);
+
+    printf("After\n");
+    printArray(b,10);    
+
+    printf("Heaping...\n");
+    heapSort(b,10);
+    
+    printf("After Heap Sort\n");
+    printArray(b,10);    
+
+    return;
     printf("Before\n");
     printArray(a,20);   
 
@@ -27,6 +57,51 @@ void main()
     printf("After\n");
     printArray(a,20);    
 }  
+
+void heapSort(int *a,int num)
+{
+    int i;
+    for(i = num; i > 0; i--){
+    
+        removeRoot(a,i);
+        printArray(a,10);
+    }
+
+}
+void removeRoot(int *a,int num)
+{
+
+    swap(&a[0],&a[num - 1]);
+    buildHeap(a,num - 1);
+}
+
+
+void buildHeap(int *a,int num)
+{
+    int i,j,k;
+    int pos;
+    int p;
+
+    for(i=1; i<num; i++){
+        pos = i;
+        p = PARENT(pos);
+        while(a[pos] > a[p]){
+            swap(&a[pos],&a[p]);
+            pos = p;
+            p = PARENT(pos);
+        }
+    }    
+}
+
+
+void swap(int *a,int *b)
+{
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+
+
+}
 
 void mergeSort(int *a,int s,int e)
 {
@@ -55,18 +130,6 @@ void mergeSort(int *a,int s,int e)
 
     mergeSort(a,s,middle);
     mergeSort(a,middle + 1,e);
-
-    //merging
-    #if 0
-    int r = 0;
-    for(r = s; r <= middle; r++)
-        printf("a[%d] = %d; ",r,a[r]);
-
-    printf("\n");
-    for(r = middle + 1 ; r <= e; r++)
-        printf("a[%d] = %d; ",r,a[r]);
-    printf("\n");
-    #endif
 
     int w[e - s + 1];
     int i,j,k;
