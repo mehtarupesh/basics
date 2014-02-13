@@ -14,12 +14,13 @@ int t[9] = {-1,-1,-1,-1,-1,-1,-1,-1,-1};
 int check(int i);
 void queen(int i);
 void print_solution();
+void words_reverse(char *string);
 
 //crap
 void print_helical(int a[4][4]);
 int arr[4][4] = {{1,2,3,4},{5,6,7,8},{9,10,11,12},{13,14,15,16}};
 
-void reverse_string(char *string,int index);
+void reverse_string(char *string,int index,int length);
 
 void swap(char *x,char *y);
 void permute(char *a,int start,int end);
@@ -30,11 +31,8 @@ int num_solutions=0;
 void main(){
 
 
-    int x;
-    
-    for(x = 0; x < 1000000;x++){
-        printf("%d...\r\b",x);
-    }
+    char test[] = "I LOVE INDIA";
+    words_reverse(test); 
     return;    
 
     int i,j,k;
@@ -67,7 +65,7 @@ void main(){
 
     char val[] = "This is the life";
     printf("Before : [%s] length [%d]\n",val,(int)strlen(val));
-    reverse_string(val,0);
+    reverse_string(val,0,strlen(val));
     printf("After : [%s]\n",val);
 
     return; 
@@ -77,6 +75,56 @@ void main(){
     print_solution();
     queen(1);
     printf("num_sol = [%d]\n",num_solutions);
+
+}
+
+void words_reverse(char *string)
+{
+    printf("Before : [%s]\n",string);
+
+    char *p = string;
+
+    while(*p != '\0'){
+        char *ref = p;
+        int word_len=0;
+
+        while(*p != '\0' && *p != ' '){
+            word_len++;
+            p++;        
+        }  
+
+        while(*p == ' ')
+            p++;
+
+        reverse_string(ref,0,word_len); 
+        printf("Intermediate : [%s]\n",string);
+
+
+    } 
+
+    reverse_string(string,0,strlen(string)); 
+    printf("After : [%s]\n",string);
+
+}
+
+void reverse_string(char *string,int index,int length){
+
+    char *ch = string;
+    char val1,val2;
+
+    if(index == length/2)//(strlen(string)/2))
+        return;
+
+    val1 = *(ch + index);
+    ch = ch + (length - index - 1);
+    val2 = *ch;
+    
+    //    printf("[%d] [%c]\n",index,val);
+
+    string[index] = val2;
+    string[length - 1 - index] = val1;
+    reverse_string(string,(index + 1),length);
+
 
 }
 
@@ -127,26 +175,6 @@ void permute(char *a,int start,int end)
         }
 
     }
-
-}
-void reverse_string(char *string,int index){
-
-    char *ch = string;
-    char val1,val2;
-
-    if(index == (strlen(string)/2))
-        return;
-
-    val1 = *(ch + index);
-    ch = ch + (strlen(string) - index - 1);
-    val2 = *ch;
-    
-    //    printf("[%d] [%c]\n",index,val);
-
-    string[index] = val2;
-    string[strlen(string) - 1 - index] = val1;
-    reverse_string(string,(index + 1));
-
 
 }
 void print_helical(int a[4][4])

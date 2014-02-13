@@ -35,6 +35,14 @@ void main()
     }
 
     printf("Before\n");
+    printArray(a,20);   
+    insertionSort(a,20);
+    printf("After\n");
+    printArray(a,20);   
+
+    return;
+
+    printf("Before\n");
     printArray(b,10);   
 
     buildHeap(b,10);
@@ -185,6 +193,7 @@ void insertionSort(int *a,int num)
             a[j - 1] = temp;
             j--; 
         }
+        printArray(a,20);   
     }
 }
 
