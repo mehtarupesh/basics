@@ -31,6 +31,10 @@ int num_solutions=0;
 void main(){
 
 
+    char str[] = "ABCD";
+    permute(str,0,3);
+
+    return;
     char test[] = "I LOVE INDIA";
     words_reverse(test); 
     return;    
@@ -58,10 +62,6 @@ void main(){
 
     return;
 
-    char str[] = "ABC";
-    permute(str,0,2);
-
-    return;
 
     char val[] = "This is the life";
     printf("Before : [%s] length [%d]\n",val,(int)strlen(val));
@@ -168,7 +168,7 @@ void permute(char *a,int start,int end)
 
         for(i=start;i<=end;i++){
 
-            printf("[%c] <==> [%c]\n",*(a + start),*(a + i));
+     //       printf("[%c] <==> [%c]\n",*(a + start),*(a + i));
             swap(a + start,a + i);
             permute(a,start+1,end);
             swap(a + start,a + i);

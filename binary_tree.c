@@ -73,6 +73,8 @@ void main() {
     printf("\n");
     printPostOrder(tree);
     printf("\n");
+
+    return;
     printPaths(tree);
     printf("\n");
 

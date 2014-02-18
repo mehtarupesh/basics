@@ -17,6 +17,13 @@ unsigned long l[1];
 void main()
 {
 
+float x = 1.0;
+float result = x / ++x;
+
+printf("Result [%f]\n",result);
+
+return;
+
 int j;
 for (j = 0; j < 8; j++)
 dw.c[j] = 0xf0 + j;

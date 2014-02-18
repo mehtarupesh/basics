@@ -12,6 +12,7 @@
 void bubbleSort(int *a,int num);
 void insertionSort(int *a,int num); 
 void mergeSort(int *a,int start,int end);
+void quickSort(int *a,int start,int end);
 
 void swap(int *a,int *b);
 void buildHeap(int *a,int num);
@@ -36,7 +37,7 @@ void main()
 
     printf("Before\n");
     printArray(a,20);   
-    insertionSort(a,20);
+    quickSort(a,0,19);
     printf("After\n");
     printArray(a,20);   
 
@@ -195,6 +196,57 @@ void insertionSort(int *a,int num)
         }
         printArray(a,20);   
     }
+}
+
+void quickSort(int *a,int start,int end)
+{
+
+    if(start >= end)
+        return;
+
+    int p_index = (start + (rand() % (start - end)));
+    int pivot = a[p_index];
+
+    int i = start;
+    int j = end;
+
+//    printf("----------------------------------------------------------\n");
+//    printArray(a,20);
+//    printf("Pivot a[%d] = [%d] | start [%d] | end [%d]\n",p_index,pivot,start,end); 
+    if(start < 0 || end < 0){
+        exit(0);
+    }
+    while(1){
+
+        while(a[i] <= pivot) 
+            i++;
+
+        while(a[j] > pivot)
+            j--;
+
+        if(i >= j)
+            break;
+
+
+        if(j == p_index)
+            p_index = i;
+       
+        int temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+ 
+    }
+
+    int temp = a[j];
+    a[j] = pivot;
+    a[p_index] = temp;
+
+//    printf("i = [%d] | j = [%d]\n",i,j);
+//    printArray(a,20);
+
+    quickSort(a,start,j-1);
+    quickSort(a,j+1,end);
+
 }
 
 
