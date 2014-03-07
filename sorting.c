@@ -2,12 +2,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-
+#include <string.h>
 
 #define PARENT(i)   ((i - 1)/2)
 #define LEFT_CHILD(i)   (2*i + 1)
 #define RIGHT_CHILD(i)   (2*i + 2)
 
+#define RANGE       10
 
 void bubbleSort(int *a,int num);
 void insertionSort(int *a,int num); 
@@ -20,7 +21,7 @@ void removeRoot(int *a,int num);
 void heapSort(int *a,int num);
 void printArray(int *a, int num);
 
-
+void countSort(int *a, int num);
 
 void main()
 {
@@ -30,10 +31,19 @@ void main()
     int i;
 
     for(i=0;i < 20;i++){
-        a[i] = rand() % 50;
+        a[i] = rand() % RANGE;
 
-        if(i < 10)b[i] = rand() % 50;
+        if(i < 10)b[i] = rand() % RANGE;
     }
+
+
+    printf("Before\n");
+    printArray(a,20);   
+    countSort(a,20);
+    printf("After\n");
+    printArray(a,20);   
+
+    return;
 
     printf("Before\n");
     printArray(a,20);   
@@ -66,6 +76,30 @@ void main()
     printf("After\n");
     printArray(a,20);    
 }  
+
+void countSort(int *a, int num)
+{
+    int count[RANGE + 1];
+    int result[num];
+
+    memset(count,0,sizeof(count));
+
+    int i,j; 
+    
+    for(i = 0; i < num; i++)
+        count[a[i]]++;
+
+    for(i = 1; i <= RANGE; i++)
+        count[i] += count[i - 1];
+
+    for(i = 0; i < num; i++){
+        result[count[a[i]] - 1 ] = a[i];
+        count[a[i]]--;
+    }
+
+    memcpy(a, result, sizeof(result));
+}
+
 
 void heapSort(int *a,int num)
 {

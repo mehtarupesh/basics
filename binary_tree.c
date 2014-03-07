@@ -12,6 +12,9 @@
 #define INT_MIN_VAL (1 << 31)
 #define INT_MAX_VAL (~(1 << 31))
 
+#define LEFT_CHILD(i)   (2*i + 1)
+#define RIGHT_CHILD(i)   (2*i + 2)
+
 typedef struct node{
 
     int data;
@@ -35,6 +38,9 @@ int maxValue(node_t* tree);
 void printTree(node_t* tree);
 void printTreeInOrder(node_t* tree);
 void printPostOrder(node_t* tree);
+void printTreeLevelOrder(node_t* tree);
+void fillLevelOrder(node_t* tree, int *a, int index);
+
 int hasPathSum(node_t* tree, int sum);
 void printPaths(node_t* tree);
 void printPathsRecur(node_t *tree,int path[],int pathLen);
@@ -67,6 +73,9 @@ void main() {
     tree = insert(tree,3);
   */ 
 
+    printTreeLevelOrder(tree);
+
+    return;
     printTree(tree);
     printf("\n");
     printTreeInOrder(tree);
@@ -251,6 +260,47 @@ void printPostOrder(node_t* tree){
     printf(" [%d] ",tree->data);
     
 }
+
+void printTreeLevelOrder(node_t* tree)
+{
+ unsigned int depth = maxDepth(tree);
+ unsigned int num = 0;
+
+ int i;
+ for(i = 0; i < depth; i++)
+    num += pow(2,i);
+
+ printf("depth = [%u] | size = [%u]\n",depth,num); 
+ int *a = calloc(num, sizeof(int));
+
+ fillLevelOrder(tree, a, 0);   
+
+ for(i = 0; i < num; i++){
+
+    if(a[i])
+        printf("[%u] ",a[i]); 
+
+ }    
+
+ printf("\n");
+ //free(a); 
+
+}
+
+void fillLevelOrder(node_t* tree, int *a, int index)
+{
+    int i;
+
+   if(tree == NULL)
+        return;
+
+    a[index] = tree->data;
+
+    fillLevelOrder(tree->left,a,LEFT_CHILD(index));
+    fillLevelOrder(tree->right,a,RIGHT_CHILD(index));
+
+}
+
 
 /*Cool*/
 int hasPathSum(node_t* tree, int sum){
