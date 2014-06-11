@@ -21,7 +21,6 @@ typedef struct node{
     struct node *left;
     struct node *right;
 
-
 } node_t;
 
 static node_t* newNode(int data);
@@ -53,14 +52,24 @@ int isBST(node_t *tree);
 int isBST2(node_t *tree);
 int isBSTRecur(node_t* tree,int min,int max);
 
+int printBoundary(node_t *tree);
+
+node_t* sortedArrayToTree(int *a, int start, int end);
+
 int sequence[] = {3,1,5,0,2,4,6,7};
 int num = 8;//5;
 int sum = 21;
+int a[] = {1,2,3,4,5,6,7,8,9};
 
 void main() {
 
     int i;
     node_t* tree=NULL;
+    
+    tree = sortedArrayToTree(a, 0, 8);
+    printTreeInOrder(tree);
+
+    return;
 
     for(i=0;i<num;i++)
         tree =insert(tree,sequence[i]);
@@ -108,6 +117,94 @@ void main() {
     printf("hasPathSum (%d) [%d]\n",sum,hasPathSum(tree,sum));
     printf("SameTree [%d]\n",sameTree(tree,tree->left));
 
+}
+
+void printBoundary(node_t *tree)
+{
+    if(tree == NULL)
+        return;
+
+    //print root
+    printf("Root [%d]\n", tree->data);
+
+    printf("Left Nodes\n");
+    //print left non leaf nodes
+    printLeftNodes(tree->left);
+
+    printf("Leaf Nodes\n");
+    // print leaf nodes
+    printLeafNodes(tree);
+
+    printf("Right Nodes\n");
+    //print right non leaf nodes
+    printRightNodes(tree->right);
+
+}
+
+void printLeftNodes(node_t *tree)
+{
+    if(tree){
+
+        if(tree->left){
+            printf("[%d] ",tree->data);
+            printLeftNodes(tree->left);
+
+        }else if(tree->right){
+            printf("[%d] ",tree->data);
+            printLeftNodes(tree->right);
+
+        }
+
+    }
+}
+
+void printRightNodes(node_t *tree)
+{
+    if(tree){
+
+        if(tree->right){
+            printRightNodes(tree->right);
+            printf("[%d] ",tree->data);
+
+        }else if(tree->left){
+            printRightNodes(tree->left);
+            printf("[%d] ",tree->data);
+
+        }
+
+    }
+}
+
+void printLeafNodes(node_t *tree)
+{
+
+    if(tree){
+
+        if(!tree->left && !tree->right)
+            printf("[%d] ", tree->data);
+
+        printLeafNodes(tree->left);
+        printLeafNodes(tree->right);
+        
+    }
+
+}
+
+node_t* sortedArrayToTree(int *a, int start, int end)
+{
+    if(start == end)
+        return newNode(a[start]);
+
+    int mid = (start + end) >> 1;
+
+    printf("start [%d] end [%d] mid [%d]\n",start, end, mid);
+
+    node_t* n = newNode(a[mid]);
+
+    if(mid > start) n->left = sortedArrayToTree(a, start, mid - 1);
+    if(mid < end) n->right = sortedArrayToTree(a, mid + 1, end);
+
+    return n;
 }
 
 static node_t* newNode(int data){
@@ -198,7 +295,7 @@ int minValue(node_t* tree){
 int maxValueBST(node_t* tree){
 
     if(tree->right != NULL)
-        return maxValueBST(tree->left);
+        return maxValueBST(tree->right);
 
     return tree->data;
 }
@@ -216,6 +313,7 @@ int maxValue(node_t* tree){
     if(tree->right != NULL)
         r = maxValue(tree->right);
 
+    /* what if tree is NULL ?? */
     return MAX(tree->data,MAX(l,r));
 }
 
@@ -283,7 +381,7 @@ void printTreeLevelOrder(node_t* tree)
  }    
 
  printf("\n");
- //free(a); 
+ free(a); 
 
 }
 

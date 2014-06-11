@@ -1,3 +1,5 @@
+#include<stdio.h>
+
 char*s="char*s=%c%s%c;main(){printf(s,34,s,34);}";
 
 
@@ -17,12 +19,17 @@ unsigned long l[1];
 void main()
 {
 
+
+int *fp(int a);
+
+//return;
+
 float x = 1.0;
 float result = x / ++x;
 
 printf("Result [%f]\n",result);
 
-return;
+//return;
 
 int j;
 for (j = 0; j < 8; j++)
